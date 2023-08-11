@@ -5,8 +5,20 @@ const mobileMunu = document.querySelector('.mobile-menu');
 const menuCarritoIcon = document.querySelector('.navbar-shopping-cart');
 const productDetailcloseIcon = document.querySelector('.product-detail-close');
 const aside = document.querySelector('.product-detail');
+
+
+/* elementos productos detallados */
+
 const cardsContainer = document.querySelector('.cards-container');
 const productDetailContainer = document.querySelector('.product-detail-secundary');
+const productDetailImage = document.querySelector(".product-image");
+const productDetailPrice = document.querySelector(".product-info p:nth-child(1)");
+const productDetailName = document.querySelector(".product-info p:nth-child(2)");
+const productDetailDescription = document.querySelector(".product-info p:nth-child(3)");
+const productDetailCloseIcon = document.querySelector('.product-detail-close');
+
+
+
 
 menuEmail.addEventListener('click', toggleDestopMenu);
 menuHamIcon.addEventListener('click', toggleMobileMenu);
@@ -50,91 +62,100 @@ function toggleCarritoAside() {
 
 }
 
+
 function openProductDetailAside() {
     aside.classList.add('inactive')
     productDetailContainer.classList.remove('inactive')
 }
+
 function closeProductDetailAside() {
     productDetailContainer.classList.add('inactive')
 }
 
-const produclist = [];
-produclist.push({
-    name: 'Bike',
-    price: 120,
-    image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-});
-produclist.push({
-    name: 'pantalla',
-    price: 320,
-    image: "https://images.pexels.com/photos/326512/pexels-photo-326512.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-});
-produclist.push({
-    name: 'portatil',
-    price: 620,
-    image: "https://images.pexels.com/photos/6446709/pexels-photo-6446709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-});
-produclist.push({
-    name: 'mause',
-    price: 30,
-    image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-});
-produclist.push({
-    name: 'Bike',
-    price: 120,
-    image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
-});
-produclist.push({
-    name: 'pantalla',
-    price: 320,
-    image: "https://images.pexels.com/photos/326512/pexels-photo-326512.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-});
-produclist.push({
-    name: 'portatil',
-    price: 620,
-    image: "https://images.pexels.com/photos/6446709/pexels-photo-6446709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-});
-produclist.push({
-    name: 'mause',
-    price: 30,
-    image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-});
+function openProductDetail(product) {
+    productDetailImage.src = product.image;
+    productDetailPrice.textContent = "$" + product.price;
+    productDetailName.textContent = product.name;
+    productDetailDescription.textContent = product.description;
 
-function renderProducts(arr) {
-    for (product of arr) {
+    productDetailContainer.classList.remove('inactive');
+}
+
+// Función para cerrar el detalle del producto
+function closeProductDetail() {
+    productDetailContainer.classList.add('inactive');
+}
+
+// Función para renderizar productos
+function renderProducts(products) {
+    for (const product of products) {
         const productCard = document.createElement('div');
         productCard.classList.add('product-card');
-    
-        /* product= {name, price, image} -> product.image*/
+
         const productImg = document.createElement('img');
-        productImg.setAttribute('src', product.image);
-        productImg.addEventListener('click', openProductDetailAside)
-    
-        const productInfo = document.createElement('div');
-        productInfo.classList.add('product-info');
-    
-        const productInfoDiv = document.createElement('div');
-    
-        const productPrice = document.createElement('p');
-        productPrice.innerText = '$' + product.price;
-    
-        const productName = document.createElement('p');
-        productName.innerText = product.name;
-    
-        productInfoDiv.append(productPrice, productName)
-    
-        const productInfoFigure = document.createElement('figure');
-        const productImgCard = document.createElement('img');
-        productImgCard.setAttribute('src', "./icons/bt_add_to_cart.svg");
-    
-        productInfoFigure.append(productImgCard)
-    
-        productInfo.append(productInfoDiv, productInfoFigure)
-    
-        productCard.append(productImg, productInfo)
-    
-        cardsContainer.appendChild(productCard)
+        productImg.src = product.image;
+        productImg.alt = product.name;
+
+        // Abre el detalle del producto al hacer clic en la imagen
+        productImg.addEventListener('click', function() {
+            openProductDetail(product);
+        });
+
+        productCard.appendChild(productImg);
+        cardsContainer.appendChild(productCard);
     }
 }
 
-renderProducts(produclist);
+// Cerrar el detalle del producto al hacer clic en el ícono de cierre
+productDetailCloseIcon.addEventListener('click', closeProductDetail);
+
+const produclist = [{
+    name: 'Bike',
+    price: 120,
+    image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    description: 'A robust bicicleta helmet to keep you safe on your rides.'
+},
+ {
+    name: 'pantalla',
+    price: 320,
+    image: "https://images.pexels.com/photos/326512/pexels-photo-326512.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: 'A robust pantalla helmet to keep you safe on your rides.'
+},
+{
+    name: 'portatil',
+    price: 620,
+    image: "https://images.pexels.com/photos/6446709/pexels-photo-6446709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: 'A robust bicycle helmet to keep you safe on your rides.'
+},
+{
+    name: 'mause',
+    price: 30,
+    image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: 'el mejor mause y rapido del mercado.'
+},
+{
+    name: 'Bike',
+    price: 120,
+    image: 'https://images.pexels.com/photos/276517/pexels-photo-276517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+    description: 'A robust bicycle helmet to keep you safe on your rides.'
+},
+{
+    name: 'pantalla',
+    price: 320,
+    image: "https://images.pexels.com/photos/326512/pexels-photo-326512.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: 'A robust bicycle helmet to keep you safe on your rides.'
+},
+{
+    name: 'portatil',
+    price: 620,
+    image: "https://images.pexels.com/photos/6446709/pexels-photo-6446709.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: 'A robust bicycle helmet to keep you safe on your rides.'
+},
+{ 
+name: 'mause',
+    price: 30,
+    image: "https://images.pexels.com/photos/2115256/pexels-photo-2115256.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    description: 'A robust bicycle helmet to keep you safe on your rides.'
+} ];
+
+renderProducts(produclist); 
